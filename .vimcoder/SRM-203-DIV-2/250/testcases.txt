@@ -1,0 +1,20 @@
+"TygerTyger"
+{"MasterOfDisaster", "DingBat", "Orpheus", "WolfMan", "MrKnowItAll"}
+"TygerTyger"
+"TygerTyger2"
+{"MasterOfDisaster", "TygerTyger1", "DingBat", "Orpheus", 
+ "TygerTyger", "WolfMan", "MrKnowItAll"}
+"TygerTyger"
+"TygerTyger"
+{"TygerTyger2000", "TygerTyger1", "MasterDisaster", "DingBat", 
+ "Orpheus", "WolfMan", "MrKnowItAll"}
+"TygerTyger"
+"grokster1"
+{"grokster2", "BrownEyedBoy", "Yoop", "BlueEyedGirl", 
+ "grokster", "Elemental", "NightShade", "Grokster1"}
+"grokster"
+"Bart13"
+{"Bart4", "Bart5", "Bart6", "Bart7", "Bart8", "Bart9", "Bart10",
+ "Lisa", "Marge", "Homer", "Bart", "Bart1", "Bart2", "Bart3",
+ "Bart11", "Bart12"}
+"Bart"
