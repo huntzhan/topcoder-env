@@ -1,4 +1,4 @@
-// {{{ $VIMCODER$ <-----------------------------------------------------
+// {{{ VimCoder 0.3.6 <-----------------------------------------------------
 // vim:filetype=cpp:foldmethod=marker:foldmarker={{{,}}}
 
 #include <algorithm>
@@ -28,8 +28,8 @@ using namespace std;
 
 // }}}
 
-class $CLASSNAME$ {
+class Criminal {
  public:
-  $RETURNTYPE$ $METHODNAME$($METHODPARAMS$) {
+  int numPseudonyms(vector <string> database, vector <string> fieldData) {
   }
 };
