@@ -27,5 +27,6 @@
 *.out
 *.app
 
+*.swp
 driver
 driver.dSYM
