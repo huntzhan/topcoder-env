@@ -1,0 +1,108 @@
+// {{{ VimCoder 0.3.6 <-----------------------------------------------------
+// vim:filetype=cpp:foldmethod=marker:foldmarker={{{,}}}
+
+#include <algorithm>
+#include <bitset>
+#include <climits>
+#include <cmath>
+#include <cstdio>
+#include <cstdlib>
+#include <ctime>
+#include <deque>
+#include <functional>
+#include <iomanip>
+#include <iostream>
+#include <list>
+#include <map>
+#include <numeric>
+#include <queue>
+#include <set>
+#include <sstream>
+#include <stack>
+#include <unordered_map>
+#include <unordered_set>
+#include <utility>
+#include <vector>
+
+using namespace std;
+
+// }}}
+
+class Jewelry {
+ public:
+
+  int Choose(int n, int k) {
+    if (k * 2 > n) {
+      k = n - k;
+    }
+    if (k == 0) {
+      return 1;
+    }
+
+    int ret = n;
+    for (int i = 2; i <= k; ++i) {
+      ret *= (n + 1 - i);
+      ret /= i;
+    }
+    return ret;
+  }
+
+  long long howMany(vector <int> values) {
+    sort(values.begin(), values.end());
+    const int n = values.size();
+    const long long max_sum = accumulate(values.begin(), values.end(), 0);
+    
+    vector<vector<int>> left_dp(n, vector<int>(max_sum + 1, 0));
+    vector<vector<int>> right_dp(n, vector<int>(max_sum + 1, 0));
+    for (int i = 1; i < n; ++i) {
+      left_dp[i][0] = right_dp[i][0] = 1;
+    }
+
+    left_dp[0][values.front()] = 1;
+    for (int i = 1; i < n; ++i) {
+      for (int s = max_sum; s >= values[i]; --s) {
+        left_dp[i][s] = left_dp[i - 1][s] + left_dp[i - 1][s - values[i]];
+      }
+      for (int s = values[i] - 1; s > 0; --s) {
+        left_dp[i][s] = left_dp[i - 1][s];
+      }
+    }
+
+    right_dp[n - 1][values.back()] = 1;
+    for (int i = n - 2; i >= 0; --i) {
+      for (int s = max_sum; s >= values[i]; --s) {
+        right_dp[i][s] = right_dp[i + 1][s] + right_dp[i + 1][s - values[i]];
+      }
+      for (int s = values[i] - 1; s > 0; --s) {
+        right_dp[i][s] = right_dp[i + 1][s];
+      }
+    }
+
+    int count = 0;
+    int begin = 0;
+    int end = 0;
+    while (begin < n) {
+      end = begin + 1;
+      while (end < n && values[end - 1] == values[end]) {
+        ++end;
+      }
+      for (int g = 1; g <= end - begin; ++g) {
+        for (int s = g * values[begin]; s <= max_sum; ++s) {
+          int left_ways = 1;
+          if (begin > 0) {
+            left_ways = left_dp[begin - 1][s - g * values[begin]];
+          }
+          int right_ways = 0;
+          if (begin + g < n) {
+            right_ways = right_dp[begin + g][s];
+          }
+
+          count += Choose(end - begin, g) * left_ways * right_ways;
+        }
+      }
+      begin = end;
+    }
+
+    return count;
+  }
+};

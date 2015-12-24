@@ -1,0 +1,99 @@
+// {{{ VimCoder 0.3.6 <-----------------------------------------------------
+// vim:filetype=cpp:foldmethod=marker:foldmarker={{{,}}}
+
+#include <algorithm>
+#include <bitset>
+#include <climits>
+#include <cmath>
+#include <cstdio>
+#include <cstdlib>
+#include <ctime>
+#include <deque>
+#include <functional>
+#include <iomanip>
+#include <iostream>
+#include <list>
+#include <map>
+#include <numeric>
+#include <queue>
+#include <set>
+#include <sstream>
+#include <stack>
+#include <unordered_map>
+#include <unordered_set>
+#include <utility>
+#include <vector>
+
+using namespace std;
+
+// }}}
+
+class Jewelry {
+ public:
+  long long howMany(vector <int> values) {
+    const int n = values.size();
+    sort(values.begin(), values.end());
+
+    vector<long long> left_bounds(n, 0);
+    vector<long long> right_bounds(n, 0);
+    left_bounds[0] = values[0];
+    right_bounds[n - 1] = values[n - 1];
+    for (int i = 1; i < n; ++i) {
+      left_bounds[i] = values[i] + left_bounds[i - 1];
+      right_bounds[n - 1 - i] = values[n - 1 - i] + right_bounds[n - i];
+    }
+
+    // left_dp[i][j]: i, the end of pieces; j, total value.
+    // right_dp[i][j]: i, the beginning of pieces; j, total value.
+    vector<vector<long long>> left_dp(
+        n,
+        vector<long long>(left_bounds[n - 1] + 1, 0));
+    for (int i = 0; i < n; ++i) {
+      left_dp[i][values[i]] = 1;
+    }
+    auto right_dp = left_dp;
+
+    // left_dp[i][j] must ends with ith pieces.
+    for (int i = 1; i < n; ++i) {
+      for (long long j = 0; j <= left_bounds[i]; ++j) {
+        if (j > values[i]) {
+          left_dp[i][j] = left_dp[i - 1][j - values[i]];
+        }
+      }
+    }
+    // right_dp is different from left_dp.
+    for (int i = n - 2; i >= 0; --i) {
+      for (long long j = 0; j <= right_bounds[i]; ++j) {
+        long long c1 = j > values[i]? right_dp[i + 1][j - values[i]] : 0;
+        right_dp[i][j] += c1 + right_dp[i + 1][j];
+      }
+    }
+
+    for (int i = 0; i < n; ++i) {
+      for (int j = 0; j < 5; ++j) {
+        cout << left_dp[i][j] << " ";
+      }
+      cout << endl;
+    }
+    cout <<endl;
+
+    for (int i = 0; i < n; ++i) {
+      for (int j = 0; j < 5; ++j) {
+        cout << right_dp[i][j] << " ";
+      }
+      cout << endl;
+    }
+
+    // count!
+    long long count = 0;
+    for (int i = 0; i < n - 1; ++i) {
+      // left: [0, i].
+      // right: [i + 1, n - 1].
+      for (long long j = 1;
+           j <= min(left_bounds[i], right_bounds[i + 1]); ++j) {
+        count += left_dp[i][j] * right_dp[i + 1][j];
+      }
+    }
+    return count;
+  }
+};
