@@ -28,42 +28,32 @@ using namespace std;
 
 // }}}
 
-// TLE, with complexity O(n)
-// 499999999
-// 1
-// 500000000
-// 500000000
-// 999999999
 class DoubleOrOneEasy {
  public:
   int minimalSteps(int a, int b, int newA, int newB) {
-    int kMaxA = newA / 2;
-    int kMaxB = newB / 2;
-
-    vector<pair<int, int>> cur, next;
-    cur.push_back(make_pair(a, b));
-    int count = 0;
-    while (!cur.empty()) {
-      for (const auto &pair : cur) {
-        int cur_a = pair.first;
-        int cur_b = pair.second;
-        if (cur_a == newA && cur_b == newB) {
-          return count;
-        }
-        // blue.
-        if (cur_a < newA && cur_b < newB) {
-          next.push_back(make_pair(cur_a + 1, cur_b + 1));
-        }
-        // red.
-        if (cur_a <= kMaxA && cur_b <= kMaxB) {
-          next.push_back(make_pair(2 * cur_a, 2 * cur_b));
-        }
-      }
-      // move to next level.
-      ++count;
-      swap(cur, next);
-      next.clear();
+    if (a > newA || b > newB) {
+      return -1;
     }
-    return -1;
+    int global_cnt = INT_MAX;
+    // 2^29 = 536870912 < 1,000,000,000
+    // 2^30 = 1073741824 > 1,000,000,000
+    for (int i = 0; i < 30; ++i) {
+      long long diff_a = newA - 1LL * a * (1 << i);
+      long long diff_b = newB - 1LL * b * (1 << i);
+      if (diff_a != diff_b || diff_a < 0) {
+        continue;
+      }
+
+      int diff = static_cast<int>(diff_a);
+      int local_cnt = i;
+      for (int j = i; j >= 0; --j) {
+        int rj = diff / (1 << j);
+        local_cnt += rj;
+        diff -= rj * (1 << j);
+      }
+
+      global_cnt = min(global_cnt, local_cnt);
+    }
+    return global_cnt == INT_MAX? -1 : global_cnt;
   }
 };
