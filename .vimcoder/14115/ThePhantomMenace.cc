@@ -1,0 +1,67 @@
+// {{{ VimCoder 0.3.6 <-----------------------------------------------------
+// vim:filetype=cpp:foldmethod=marker:foldmarker={{{,}}}
+
+#include <algorithm>
+#include <array>
+#include <bitset>
+#include <climits>
+#include <cmath>
+#include <cstdio>
+#include <cstdlib>
+#include <cstring>
+#include <ctime>
+#include <deque>
+#include <functional>
+#include <iomanip>
+#include <iostream>
+#include <list>
+#include <map>
+#include <numeric>
+#include <queue>
+#include <set>
+#include <sstream>
+#include <stack>
+#include <unordered_map>
+#include <unordered_set>
+#include <utility>
+#include <vector>
+
+using namespace std;
+
+// }}}
+
+class ThePhantomMenace {
+ public:
+
+  int BinarySearch(const vector<int> &droids, const int door) {
+    int begin = 0;
+    int end = droids.size();
+    while (begin < end) {
+      int mid = begin + (end - begin) / 2;
+      if (droids[mid] > door) {
+        end = mid;
+      } else {
+        begin = mid + 1;
+      }
+    }
+    // droids[end] is the first droid greater than door.
+    int diff = INT_MAX;
+    if (end < droids.size()) {
+      diff = min(diff, abs(droids[end] - door));
+    }
+    if (end > 0) {
+      diff = min(diff, abs(droids[end - 1] - door));
+    }
+    return diff;
+  }
+
+  int find(vector <int> doors, vector <int> droids) {
+    sort(droids.begin(), droids.end());
+
+    int max_diff = INT_MIN;
+    for (const int door : doors) {
+      max_diff = max(max_diff, BinarySearch(droids, door));
+    }
+    return max_diff;
+  }
+};
