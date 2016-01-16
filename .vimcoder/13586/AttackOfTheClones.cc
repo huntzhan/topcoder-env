@@ -30,38 +30,63 @@ using namespace std;
 
 // }}}
 
+// O(n^2) solution, passed all testcases.
+// class AttackOfTheClones {
+//  public:
+//   int count(vector <int> firstWeek, vector <int> lastWeek) {
+//     const int N = firstWeek.size();
+// 
+//     // promise: begins[i] is the minimum index of the ith t-shirt.
+//     vector<int> begins(N + 1);
+//     for (int i = 0; i < N; ++i) {
+//       begins[firstWeek[i]] = i;
+//     }
+// 
+//     int weeks = 1;
+//     while (true) {
+//       // test stop condition.
+//       bool stop = true;
+//       for (int i = 0; i < N; ++i) {
+//         int shirt_num = lastWeek[i];
+//         if (begins[shirt_num] > i) {
+//           stop = false;
+//           break;
+//         }
+//       }
+//       if (stop) {
+//         break;
+//       }
+// 
+//       // update begins.
+//       for (int i = 1; i <= N; ++i) {
+//         begins[i] = max(0, begins[i] - 1);
+//       }
+//       ++weeks;
+//     }
+//     return weeks;
+//   }
+// };
+
+
+// O(n) solution.
 class AttackOfTheClones {
  public:
   int count(vector <int> firstWeek, vector <int> lastWeek) {
     const int N = firstWeek.size();
-
-    // promise: begins[i] is the minimum index of the ith t-shirt.
-    vector<int> begins(N + 1);
+    vector<int> first_mapping(N + 1);
+    vector<int> last_mapping(N + 1);
     for (int i = 0; i < N; ++i) {
-      begins[firstWeek[i]] = i;
+      first_mapping[firstWeek[i]] = i;
+      last_mapping[lastWeek[i]] = i;
     }
 
-    int days = 1;
-    while (true) {
-      // test stop condition.
-      bool stop = true;
-      for (int i = 0; i < N; ++i) {
-        int shirt_num = lastWeek[i];
-        if (begins[shirt_num] > i) {
-          stop = false;
-          break;
-        }
+    int weeks = 1;
+    for (int shirt = 1; shirt <= N; ++shirt) {
+      if (first_mapping[shirt] <= last_mapping[shirt]) {
+        continue;
       }
-      if (stop) {
-        break;
-      }
-
-      // update begins.
-      for (int i = 1; i <= N; ++i) {
-        begins[i] = max(0, begins[i] - 1);
-      }
-      ++days;
+      weeks = max(weeks, first_mapping[shirt] - last_mapping[shirt] + 1);
     }
-    return days;
+    return weeks;
   }
 };
