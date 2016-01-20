@@ -1,0 +1,35 @@
+<html><body bgcolor="#000000" text="#ffffff"><table><tr><td colspan="2"><h3>Problem Statement</h3></td></tr><tr><td>&#160;&#160;&#160;&#160;</td><td>In order to become a Sith, Anakin Skywalker must descend a dangerous staircase and join his master who waits for him at the bottom.
+The staircase consists of the bottom floor, N-1 floating platforms, and the top floor.
+Hence, Anakin must make exactly N steps in order to get from the top to the bottom.
+(He must step on each platform exactly once.)
+<br></br><br></br>
+You are given a vector &lt;int&gt; <b>steps</b> that contains N elements: the height differences between consecutive platforms, from the bottom to the top.<br></br>
+That is, the bottom floor is currently at height 0, the first floating platform is at <b>steps</b>[0], the second floating platform is at <b>steps</b>[0]+<b>steps</b>[1], and so on, until at the end we get to the top floor which is at height sum(<b>steps</b>).<br></br>
+For example, if <b>steps</b>={2,3,5}, the floating platforms are currently at heights 2 and 5 (= 2+3), and the top floor is at height 10 (= 2+3+5).
+<br></br><br></br>
+Whenever Anakin descends a large distance in a single step, he gets hurt and loses some life.<br></br>
+More precisely, it works as follows:<br></br>
+If the height difference H between consecutive platforms is <b>D</b> or less, Anakin can take the step without any harm.<br></br>
+If the height difference H is more than <b>D</b>, Anakin will lose (H - <b>D</b>)^2 life points when he takes the step.<br></br>
+<br></br><br></br>
+Before he starts his descent, Anakin can use the Force to shift at most <b>T</b> of the floating platforms.<br></br>
+There are some restrictions:
+<ul>
+<li>He is not allowed to shift the bottom floor or the top floor, only the floating platforms between them.</li>
+<li>Each platform can only be shifted up or down.</li>
+<li>Each platform can only be shifted by an integer distance.</li>
+<li>At the end, after all the shifting, the entire staircase must still go upwards if you go from the bottom to the top. That is, if you list the heights of the bottom floor, all floating platforms in their original order, and then the top floor, you must still get a strictly increasing sequence of integers.</li>
+</ul>
+Also note that Anakin can only start his descent after he finishes moving all the platforms.
+<br></br><br></br>
+Continuing the above example, suppose that <b>T</b>=1.<br></br>
+If Anakin decides to shift the second floating platform (the one that is currently at height 5), he can shift it to one of the following heights: 3, 4, 6, 7, 8, or 9.<br></br>
+If he had <b>T</b>=2 in the same situation, he could also do many other things.<br></br>
+For example, he could shift the two platforms from heights 2 and 5 to heights 1 and 2, respectively.
+<br></br><br></br>
+You are given the int <b>steps</b> and the ints <b>D</b> and <b>T</b> as defined above.<br></br>
+Compute and return the smallest total number of life points Anakin will lose if he uses the Force wisely.</td></tr><tr><td colspan="2"><h3>Definition</h3></td></tr><tr><td>&#160;&#160;&#160;&#160;</td><td><table><tr><td>Class:</td><td>RevengeOfTheSith</td></tr><tr><td>Method:</td><td>move</td></tr><tr><td>Parameters:</td><td>vector &lt;int&gt;, int, int</td></tr><tr><td>Returns:</td><td>int</td></tr><tr><td>Method signature:</td><td>int move(vector &lt;int&gt; steps, int T, int D)</td></tr><tr><td colspan="2">(be sure your method is public)</td></tr></table></td></tr><tr><td colspan="2"><h3>Limits</h3></td></tr><tr><td>&#160;&#160;&#160;&#160;</td><td><table><tr><td>Time limit (s):</td><td>2.000</td></tr><tr><td>Memory limit (MB):</td><td>256</td></tr></table></td></tr><tr><td colspan="2"><h3>Constraints</h3></td></tr><tr><td align="center" valign="top">-</td><td>steps will contain between 1 and 50 integers.</td></tr><tr><td align="center" valign="top">-</td><td>Each element of steps will be between 1 and 1000.</td></tr><tr><td align="center" valign="top">-</td><td>D will be between 1 and 1000.</td></tr><tr><td align="center" valign="top">-</td><td>T will be between 0 and N-1 where N is the number of elements of steps.</td></tr><tr><td colspan="2"><h3>Examples</h3></td></tr><tr><td align="center" nowrap="true">0)</td><td></td></tr><tr><td>&#160;&#160;&#160;&#160;</td><td><table><tr><td><table><tr><td><pre>{2,3,5}</pre></td></tr><tr><td><pre>1</pre></td></tr><tr><td><pre>1</pre></td></tr></table></td></tr><tr><td><pre>Returns: 19</pre></td></tr><tr><td><table><tr><td colspan="2">An optimal strategy is to move the second floating platform one unit higher.<br></br>
+After the change, the floating platforms are at heights 2 and 6, and the top floor is still at height 10.<br></br>
+Anakin's three steps downwards correspond to the distances 10-6 = 4, 6-2 = 4, and 2-0 = 2.<br></br>
+The total amount of life points lost during the descent is (4-1)^2 + (4-1)^2 + (2-1)^2 = 19.</td></tr></table></td></tr></table></td></tr><tr><td align="center" nowrap="true">1)</td><td></td></tr><tr><td>&#160;&#160;&#160;&#160;</td><td><table><tr><td><table><tr><td><pre>{2,3,5}</pre></td></tr><tr><td><pre>2</pre></td></tr><tr><td><pre>1</pre></td></tr></table></td></tr><tr><td><pre>Returns: 17</pre></td></tr><tr><td><table><tr><td colspan="2">The same example as the previous one but now Anakin can move two platforms.<br></br>
+One optimal strategy is to shift the two platforms to heights 3 and 7.</td></tr></table></td></tr></table></td></tr><tr><td align="center" nowrap="true">2)</td><td></td></tr><tr><td>&#160;&#160;&#160;&#160;</td><td><table><tr><td><table><tr><td><pre>{1,2,3,4,5,6}</pre></td></tr><tr><td><pre>1</pre></td></tr><tr><td><pre>2</pre></td></tr></table></td></tr><tr><td><pre>Returns: 30</pre></td></tr><tr><td><table><tr><td colspan="2">As you go up the stairs the difference between platforms increases.</td></tr></table></td></tr></table></td></tr><tr><td align="center" nowrap="true">3)</td><td></td></tr><tr><td>&#160;&#160;&#160;&#160;</td><td><table><tr><td><table><tr><td><pre>{1,1,1,1,1,1,1}</pre></td></tr><tr><td><pre>3</pre></td></tr><tr><td><pre>3</pre></td></tr></table></td></tr><tr><td><pre>Returns: 0</pre></td></tr><tr><td><table><tr><td colspan="2">There's no need to move any platform.</td></tr></table></td></tr></table></td></tr><tr><td align="center" nowrap="true">4)</td><td></td></tr><tr><td>&#160;&#160;&#160;&#160;</td><td><table><tr><td><table><tr><td><pre>{1,2,3}</pre></td></tr><tr><td><pre>2</pre></td></tr><tr><td><pre>2</pre></td></tr></table></td></tr><tr><td><pre>Returns: 0</pre></td></tr><tr><td><table><tr><td colspan="2">In this example Anakin needs to move both platforms one unit of distance higher than they are.</td></tr></table></td></tr></table></td></tr></table><p>This problem statement is the exclusive and proprietary property of TopCoder, Inc.  Any unauthorized use or reproduction of this information without the prior written consent of TopCoder, Inc. is strictly prohibited.  (c)2003, TopCoder, Inc.  All rights reserved.  </p></body></html>
