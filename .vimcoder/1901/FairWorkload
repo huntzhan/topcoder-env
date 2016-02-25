@@ -1,0 +1,63 @@
+// {{{ VimCoder 0.3.6 <-----------------------------------------------------
+// vim:filetype=cpp:foldmethod=marker:foldmarker={{{,}}}
+
+#include <algorithm>
+#include <array>
+#include <bitset>
+#include <climits>
+#include <cmath>
+#include <cstdio>
+#include <cstdlib>
+#include <cstring>
+#include <ctime>
+#include <deque>
+#include <functional>
+#include <iomanip>
+#include <iostream>
+#include <list>
+#include <map>
+#include <numeric>
+#include <queue>
+#include <set>
+#include <sstream>
+#include <stack>
+#include <unordered_map>
+#include <unordered_set>
+#include <utility>
+#include <vector>
+
+using namespace std;
+
+// }}}
+
+class FairWorkload {
+ public:
+
+  int CalMinWorkers(const vector<int> &folders, int max_sum) {
+    int count = 1;
+    int cur_sum = 0;
+    for (const int folder : folders) {
+      if (cur_sum + folder > max_sum) {
+        ++count;
+        cur_sum = folder;
+      } else {
+        cur_sum += folder;
+      }
+    }
+    return count;
+  }
+
+  int getMostWork(vector <int> folders, int workers) {
+    int begin = *max_element(folders.begin(), folders.end());
+    int end = INT_MAX;
+    while (begin < end) {
+      int mid = begin + (end - begin) / 2;
+      if (CalMinWorkers(folders, mid) <= workers) {
+        end = mid;
+      } else {
+        begin = mid + 1;
+      }
+    }
+    return begin;
+  }
+};
